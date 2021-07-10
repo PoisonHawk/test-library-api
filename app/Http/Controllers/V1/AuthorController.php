@@ -7,6 +7,7 @@ use App\Http\Requests\V1\Author\Create;
 use App\Http\Resources\V1\Author\AuthorListResource;
 use App\Http\Resources\V1\Author\AuthorResource;
 use App\Models\Author;
+use App\Services\SearchService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,12 +21,7 @@ class AuthorController extends Controller
      */
     public function index(Request $request)
     {
-        $page = $request->get('page', 0);
-        $limit = $request->get('limit', $this->perPage);
-        $orderBy = $request->get('order_by', 'surname');
-        $orderDirection = $request->get('order_direction', 'ASC');
-
-        $authors = Author::where('active', 1)->orderBy($orderBy, $orderDirection)->paginate($limit);
+        $authors = (new SearchService(new Author))->get();
 
         return response()->json(AuthorListResource::collection($authors), Response::HTTP_OK);
     }
