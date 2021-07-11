@@ -21,7 +21,8 @@ class AuthorListResource extends JsonResource
             'surname' => $this->surname,
             'name' => $this->name,
             'patronymic' => $this->patronymic,
-            'slug' => $this->slug
+            'slug' => $this->slug,
+            'total_books' => $this->books_count
         ];
     }
 }

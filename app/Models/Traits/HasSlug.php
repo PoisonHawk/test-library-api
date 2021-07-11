@@ -22,4 +22,11 @@ trait HasSlug {
 
         });
     }
+
+    public function getBySlug(string $slug)
+    {
+        return $this->query()
+            ->where('slug', $slug)
+            ->firstOrFail();
+    }
 }

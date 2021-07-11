@@ -19,7 +19,7 @@ class BookResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
-            'authors' => AuthorListResource::collection($this->authors),
+            'authors' => AuthorListResource::collection($this->whenLoaded('authors')),
         ];
     }
 }

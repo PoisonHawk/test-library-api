@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\Author;
 
+use App\Http\Resources\V1\Book\BookResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AuthorResource extends JsonResource
@@ -18,8 +19,8 @@ class AuthorResource extends JsonResource
             'id' => $this->id,
             'surname' => $this->surname,
             'name' => $this->name,
-            'patronymic' => $this->patronymic,
-            'books' => $this->books
+            'patronymic' => $this->patronymic,            
+            'books' => BookResource::collection($this->whenLoaded('books'))
         ];
     }
 }

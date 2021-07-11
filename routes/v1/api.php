@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\AuthorBookController;
 use App\Http\Controllers\V1\AuthorController;
 use App\Http\Controllers\V1\BookController;
 use Illuminate\Http\Request;
@@ -22,3 +23,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('authors', AuthorController::class);
 Route::apiResource('books', BookController::class);
+Route::get('authors/{id}/books', AuthorBookController::class);

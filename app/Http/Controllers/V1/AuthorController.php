@@ -5,21 +5,27 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Author\Create;
 use App\Http\Resources\V1\Author\AuthorListResource;
-use App\Http\Resources\V1\Author\AuthorResource;
-use App\Models\Author;
 use App\Models\Search\AuthorSearch;
+use App\Services\AuthorService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthorController extends Controller
 {
+    protected $authorService;
+
+    public function __construct(AuthorService $authorService)
+    {
+        $this->authorService = $authorService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $authors = (new AuthorSearch())
             ->options($request->all())
@@ -36,9 +42,9 @@ class AuthorController extends Controller
      */
     public function store(Create $request): JsonResponse
     {
-        $author = Author::create($request->validated());
+        $author = $this->authorService->create($request->validated());
 
-        return response()->json(new AuthorResource($author), JsonResponse::HTTP_CREATED);
+        return response()->json(new AuthorListResource($author), JsonResponse::HTTP_CREATED);
     }
 
     /**
@@ -49,9 +55,9 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        $author = Author::findOrFail($id);
+        $author = $this->authorService->getAuthor($id);
 
-        return response()->json(new AuthorResource($author), JsonResponse::HTTP_OK);
+        return response()->json(new AuthorListResource($author->loadCount('books')), JsonResponse::HTTP_OK);
     }
 
     /**
