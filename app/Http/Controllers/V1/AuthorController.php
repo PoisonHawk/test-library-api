@@ -7,7 +7,7 @@ use App\Http\Requests\V1\Author\Create;
 use App\Http\Resources\V1\Author\AuthorListResource;
 use App\Http\Resources\V1\Author\AuthorResource;
 use App\Models\Author;
-use App\Services\SearchService;
+use App\Models\Search\AuthorSearch;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,9 @@ class AuthorController extends Controller
      */
     public function index(Request $request)
     {
-        $authors = (new SearchService(new Author))->get();
+        $authors = (new AuthorSearch())
+            ->options($request->all())
+            ->get();
 
         return response()->json(AuthorListResource::collection($authors), Response::HTTP_OK);
     }

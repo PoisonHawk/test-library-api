@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Book\Create;
 use App\Http\Resources\V1\Book\BookResource;
 use App\Models\Book;
+use App\Models\Search\BookSearch;
 use App\Services\BookService;
 use App\Services\SearchService;
 use Illuminate\Http\JsonResponse;
@@ -27,10 +28,8 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        // $books = Book::with('authors')->paginate($request->get('limit', 10));
-
-        $books = (new SearchService(new Book))
-            ->with(['authors'])
+        $books = (new BookSearch())
+            ->options($request->all())
             ->get();
 
         return response()->json(BookResource::collection($books), JsonResponse::HTTP_OK);
