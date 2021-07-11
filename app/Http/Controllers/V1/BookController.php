@@ -56,9 +56,9 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = Book::findOrFail($id);
+        $book = $this->bookService->getBook($id);
 
-        return response()->json(new BookResource($book), JsonResponse::HTTP_OK);
+        return response()->json(new BookResource($book->load('authors')), JsonResponse::HTTP_OK);
     }
 
     /**
@@ -68,7 +68,7 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Create $request, $id)
     {
         $book = $this->bookService->update($id, $request->validated());
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\V1\Book;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Create extends FormRequest
@@ -24,8 +25,17 @@ class Create extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'authors' => ['required', 'array']
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('books')->ignore((int)$this->book)               
+            ],
+            'authors' => [
+                'required',
+                'array'
+            ],
+            'authors.*' => ['exists:authors,id']
         ];
     }
 }

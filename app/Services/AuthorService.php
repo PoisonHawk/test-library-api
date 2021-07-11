@@ -34,6 +34,8 @@ class AuthorService
     {
         $author = $this->getById($id);
 
+        $author->books()->detach();
+
         return $author->delete();
     }
 

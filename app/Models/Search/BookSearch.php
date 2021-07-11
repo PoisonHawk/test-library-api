@@ -14,4 +14,6 @@ class BookSearch extends Book
     protected $relations = ['authors'];
 
     protected $orderable = ['id', 'title'];
+
+    
 }

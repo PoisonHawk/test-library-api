@@ -16,8 +16,6 @@ trait SearchService
 
     protected $searchOptions = [];
 
-    // protected $relationsCount = [];
-
     public function options($searchOptions)
     {
         $this->searchOptions = $searchOptions;
@@ -56,7 +54,7 @@ trait SearchService
 
     protected function loadRelationsCount($builder)
     {
-        return $builder->withCount($this->relationsCount);
+        return $builder->withCount($this->withCount);
     }
 
     protected function sort($builder)

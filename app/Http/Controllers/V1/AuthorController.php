@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Author\Create;
 use App\Http\Resources\V1\Author\AuthorListResource;
+use App\Http\Resources\V1\Author\AuthorResource;
 use App\Models\Search\AuthorSearch;
 use App\Services\AuthorService;
 use Illuminate\Http\JsonResponse;
@@ -57,7 +58,7 @@ class AuthorController extends Controller
     {
         $author = $this->authorService->getAuthor($id);
 
-        return response()->json(new AuthorListResource($author->loadCount('books')), JsonResponse::HTTP_OK);
+        return response()->json(new AuthorResource($author), JsonResponse::HTTP_OK);
     }
 
     /**
@@ -67,9 +68,11 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Create $request, $id)
     {
-        //
+        $author = $this->authorService->update($id, $request->validated());
+
+        return response()->json(new AuthorResource($author), JsonResponse::HTTP_OK);
     }
 
     /**
@@ -80,6 +83,8 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->authorService->delete($id);
+
+        return response()->json([], JsonResponse::HTTP_NO_CONTENT);
     }
 }

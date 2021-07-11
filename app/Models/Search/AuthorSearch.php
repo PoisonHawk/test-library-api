@@ -13,5 +13,6 @@ class AuthorSearch extends Author
 
     protected $orderable = ['id', 'surname'];
 
-    protected $relationsCount = ['books']; 
+    protected $withCount = ['books'];
+
 }
